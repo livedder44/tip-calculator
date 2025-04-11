@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <link rel="stylesheet" href="./styles.css">
+  
+  <title>Frontend Mentor | Tip calculator app</title>
+
+</head>
+<body>
+
+  <section>
+    <a href="" class="logolink flex"></a>
+    <div class="calculator_container flex">
+        <div class="enter_container flex">
+          <div class="input_container bill_container onclick=focusInput()" >
+              <h4 class="flex"><span class="first">Bill</span><span class="error_bill">Can’t be zero</span></h4>
+              <img class="prefix" src="./images/icon-dollar.svg" alt="icon-dollar">
+              <input class="bill" type="text" inputmode="numeric" pattern="\d*"maxlength="10" placeholder="0">
+          </div>
+          <div class="select_tip">
+              <h4>Select Tip %</h4>
+              <div class="percent_buttons flex">
+
+              </div>
+          </div>   
+          <div class="input_container number_of_people_container onclick=focusInput()" >
+              <h4 class="flex"><span class="first">Number of People</span><span class="error_number_of_people">Can’t be zero</span></h4>
+              <img class="prefix" src="./images/icon-person.svg" alt="icon-person">
+              <input class="number_of_people" type="text" inputmode="numeric" pattern="\d*" maxlength="10" placeholder="0">
+          
+          </div>
+        </div>
+      <div class="result_container flex">
+        <div class="result_calculation flex">
+            <div class="total_container flex">
+              <p class="total_text flex">
+                <span>Tip Amount</span>
+                <span>/ person</span>
+              </p>
+              <p class="tip_amount">$0.00</p>
+            </div>
+            <div class="total_container flex">
+              <p class="total_text flex">
+                <span>Total</span>
+                <span>/ person</span>
+              </p>
+              <p class="total">$0.00</p>
+            </div>
+        </div>
+          <button class="reset">reset</button>
+        </div>
+  </div>
+  </section>
+</body>
+<script src="./script.js"></script>
+</html>
