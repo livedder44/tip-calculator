@@ -51,7 +51,7 @@ const inputCustom = document.createElement('input');
 inputCustom.type = 'text';
 inputCustom.placeholder = 'Custom';
 inputCustom.style.height = '48px';
-inputCustom.style.padding = "0";
+inputCustom.style.padding = "15px";
 document.querySelector('.percent_buttons').appendChild(inputCustom);
 
 // selectors
@@ -59,7 +59,6 @@ const billInput = document.querySelector('.bill');
 const numberOfPeopleInput = document.querySelector('.number_of_people');
 const tipAmountField = document.querySelector('.tip_amount');
 const totalField = document.querySelector('.total');
-const tipButtons = document.querySelectorAll('.tip-button');
 const resetButton = document.querySelector('.reset');
 const errorBill = document.querySelector('.error_bill');
 const errorPeople = document.querySelector('.error_number_of_people');
@@ -71,9 +70,10 @@ tipAmountField.textContent = "$0.00";
 totalField.textContent = "$0.00";
 
 // active button style
-function setActiveButton(button) {
-  tipButtons.forEach(btn => btn.classList.remove('active'));
-  button.classList.add('active');
+function setActiveButton(activeButton) {
+  const buttons = document.querySelectorAll('.tip-button');
+  buttons.forEach(btn => btn.classList.remove('active'));
+  activeButton.classList.add('active');
 }
 
 // input validation
@@ -115,24 +115,26 @@ function calculateTip() {
   totalField.textContent = `$${totalTip.toFixed(2)}`;
 }
 
-// percent buttons
-tipButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    selectedTip = parseFloat(button.textContent);
-    customInput.value = '';
-    setActiveButton(button);
+// handle percent button clicks using event delegation
+const percentButtonsContainer = document.querySelector('.percent_buttons');
+
+percentButtonsContainer.addEventListener('click', (event) => {
+  if (event.target.classList.contains('tip-button')) {
+    selectedTip = parseFloat(event.target.textContent);
+    inputCustom.value = '';
+    setActiveButton(event.target);
     calculateTip();
-  });
+  }
 });
 
 // custom input for percent
 inputCustom.addEventListener('input', () => {
   selectedTip = parseFloat(inputCustom.value) || 0;
-  tipButtons.forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tip-button').forEach(btn => btn.classList.remove('active'));
   calculateTip();
 });
 
-// input handlers: allow only numbers and one decimal point
+// bill input handler (allow decimal)
 billInput.addEventListener('input', () => {
   billInput.value = billInput.value.replace(/[^0-9.]/g, '');
   const parts = billInput.value.split('.');
@@ -142,6 +144,7 @@ billInput.addEventListener('input', () => {
   calculateTip();
 });
 
+// people input handler (only digits)
 numberOfPeopleInput.addEventListener('input', () => {
   numberOfPeopleInput.value = numberOfPeopleInput.value.replace(/\D/g, '');
   calculateTip();
@@ -155,7 +158,7 @@ resetButton.addEventListener('click', () => {
   selectedTip = 0;
   tipAmountField.textContent = "$0.00";
   totalField.textContent = "$0.00";
-  tipButtons.forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tip-button').forEach(btn => btn.classList.remove('active'));
   errorBill.style.display = 'none';
   errorPeople.style.display = 'none';
   billInput.style.border = 'none';
