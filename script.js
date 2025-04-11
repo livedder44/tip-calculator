@@ -66,7 +66,7 @@ const totalField = document.querySelector('.total');
 const tipButtons = document.querySelectorAll('.tip-button');
 const customInput = document.querySelector('input[placeholder="Custom"]');
 const resetButton = document.querySelector('.reset');
-
+customInput.style.padding = "0";
 const errorBill = document.querySelector('.error_bill');
 const errorPeople = document.querySelector('.error_number_of_people');
 
