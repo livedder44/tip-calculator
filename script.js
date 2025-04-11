@@ -12,10 +12,8 @@ let errorColor = "#E17052";
 // add colors
 document.body.style.backgroundColor = backgroundColor;
 document.querySelectorAll('h4').forEach(el => {
-    el.style.color = h4Color;
+  el.style.color = h4Color;
 });
-
-
 
 // create logo
 const imgLogo = document.createElement('img');
@@ -24,49 +22,45 @@ imgLogo.alt = 'logo split team';
 document.querySelector('.logolink').appendChild(imgLogo);
 
 // .calculator_container style
-const calculatorContainer = document.querySelector('.calculator_container')
+const calculatorContainer = document.querySelector('.calculator_container');
 calculatorContainer.style.backgroundColor = mainTextColor;
 calculatorContainer.style.borderRadius = "25px";
 
-
+// generate percent buttons
 const buttonPercent = [
-    { button1: "5%" },
-    { button2: "10%" },
-    { button3: "15%" },
-    { button4: "25%" },
-    { button1: "50%" },
-    
+  { button1: "5%" },
+  { button2: "10%" },
+  { button3: "15%" },
+  { button4: "25%" },
+  { button5: "50%" },
 ];
 
 const percentButtons = document.querySelector('.percent_buttons');
 
 buttonPercent.forEach(item => {
-    const value = Object.values(item)[0];
-    const button = document.createElement('button');
-    button.textContent = value;
-    button.className = 'tip-button';
-    button.style.height = '48px';
-    percentButtons.appendChild(button);
-    
+  const value = Object.values(item)[0];
+  const button = document.createElement('button');
+  button.textContent = value;
+  button.className = 'tip-button';
+  button.style.height = '48px';
+  percentButtons.appendChild(button);
 });
-const inputCustom = document.createElement('input')
+
+// custom input
+const inputCustom = document.createElement('input');
 inputCustom.type = 'text';
 inputCustom.placeholder = 'Custom';
+inputCustom.style.height = '48px';
+inputCustom.style.padding = "0";
 document.querySelector('.percent_buttons').appendChild(inputCustom);
-// inputCustom.style.maxWidth = ('117px');
-inputCustom.style.height = ('48px');
 
-
-
-
+// selectors
 const billInput = document.querySelector('.bill');
 const numberOfPeopleInput = document.querySelector('.number_of_people');
 const tipAmountField = document.querySelector('.tip_amount');
 const totalField = document.querySelector('.total');
 const tipButtons = document.querySelectorAll('.tip-button');
-const customInput = document.querySelector('input[placeholder="Custom"]');
 const resetButton = document.querySelector('.reset');
-customInput.style.padding = "0";
 const errorBill = document.querySelector('.error_bill');
 const errorPeople = document.querySelector('.error_number_of_people');
 
@@ -76,13 +70,13 @@ let selectedTip = 0;
 tipAmountField.textContent = "$0.00";
 totalField.textContent = "$0.00";
 
-// active button
+// active button style
 function setActiveButton(button) {
   tipButtons.forEach(btn => btn.classList.remove('active'));
   button.classList.add('active');
 }
 
-// inputs
+// input validation
 function validateInputs(bill, people) {
   if (!bill) {
     errorBill.style.display = 'inline';
@@ -131,26 +125,33 @@ tipButtons.forEach(button => {
   });
 });
 
-// custom input
-customInput.addEventListener('input', () => {
-  selectedTip = parseFloat(customInput.value) || 0;
+// custom input for percent
+inputCustom.addEventListener('input', () => {
+  selectedTip = parseFloat(inputCustom.value) || 0;
   tipButtons.forEach(btn => btn.classList.remove('active'));
   calculateTip();
 });
 
-//  bill / number_of_people
-[billInput, numberOfPeopleInput].forEach(input => {
-  input.addEventListener('input', () => {
-    input.value = input.value.replace(/\D/g, '');
-    calculateTip();
-  });
+// input handlers: allow only numbers and one decimal point
+billInput.addEventListener('input', () => {
+  billInput.value = billInput.value.replace(/[^0-9.]/g, '');
+  const parts = billInput.value.split('.');
+  if (parts.length > 2) {
+    billInput.value = parts[0] + '.' + parts[1];
+  }
+  calculateTip();
 });
 
-// button Reset
+numberOfPeopleInput.addEventListener('input', () => {
+  numberOfPeopleInput.value = numberOfPeopleInput.value.replace(/\D/g, '');
+  calculateTip();
+});
+
+// reset button
 resetButton.addEventListener('click', () => {
   billInput.value = '';
   numberOfPeopleInput.value = '';
-  customInput.value = '';
+  inputCustom.value = '';
   selectedTip = 0;
   tipAmountField.textContent = "$0.00";
   totalField.textContent = "$0.00";
